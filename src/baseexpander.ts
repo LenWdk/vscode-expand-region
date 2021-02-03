@@ -94,3 +94,11 @@ export function selection_contain_linebreaks(text:string,startIndex:number,endIn
   let part = text.substring(startIndex, endIndex);
   return linebreakRe.test(part);
 }
+
+export function right_border_is_open_bracket(text:string,startIndex:number,endIndex:number):boolean{
+    if(endIndex < text.length) {
+        let sign: String = text.substring(endIndex, endIndex + 1);
+        return sign === '(';
+    }
+  return false;
+}

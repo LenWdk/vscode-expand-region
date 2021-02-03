@@ -1,10 +1,12 @@
 import { print } from 'util';
-import { BaseExpander, get_line, IResultSelection, selection_contain_linebreaks } from './baseexpander';
+import vscode = require('vscode');
+import { BaseExpander, get_line, IResultSelection, right_border_is_open_bracket, selection_contain_linebreaks } from './baseexpander';
 import * as ex from './child/_expand_all';
 export class dart extends BaseExpander {
+    orange = vscode.window.createOutputChannel("Orange");
 
     expand(text: string, start: number, end: number): IResultSelection {
-        print(`expand\ntext=${text}start=${start}end=${end}`);
+        this.orange.appendLine(`expand\ntext=${text}start=${start}end=${end}`);
         let selection_is_in_string = ex.expand_to_quotes(text, start, end);
         if (selection_is_in_string) {
             let string_result = this.expand_agains_string(selection_is_in_string.selectionText, start - selection_is_in_string.end, end - selection_is_in_string.end);
@@ -13,6 +15,14 @@ export class dart extends BaseExpander {
                 string_result.start = string_result.start + selection_is_in_string.end;
                 string_result.selectionText = text.substring(string_result.end, string_result.start);
                 return string_result;
+            }
+        }
+        if(right_border_is_open_bracket(text, start, end)) {
+            let expand_stack = ["semantic_unit"];
+            let result = ex.expand_to_semantic_unit(text, start, end);
+            if (result) {
+                result["expand_stack"] = expand_stack;
+                return result;
             }
         }
         if (!selection_contain_linebreaks(text, start, end)) {
@@ -42,7 +52,7 @@ export class dart extends BaseExpander {
 
     }
     expand_agains_line(text, start, end) {
-        print(`expand_agains_line\ntext=${text}start=${start}end=${end}`);
+        this.orange.appendLine(`expand_agains_line\ntext=${text}start=${start}end=${end}`);
         let expand_stack = [];
         expand_stack.push("subword");
         let result = ex.expand_to_subword(text, start, end);
@@ -79,7 +89,7 @@ export class dart extends BaseExpander {
         return result;
     }
     expand_agains_string(text, start, end): IResultSelection {
-        print(`expand_agains_string\ntext=${text}start=${start}end=${end}`);
+        this.orange.appendLine(`expand_agains_string\ntext=${text}start=${start}end=${end}`);
         let expand_stack = [];
         expand_stack.push("semantic_unit");
         let result = ex.expand_to_semantic_unit(text, start, end);

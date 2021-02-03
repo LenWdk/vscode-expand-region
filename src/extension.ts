@@ -15,7 +15,7 @@ export function activate(context: vscode.ExtensionContext) {
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
-    var expandSub = vscode.commands.registerCommand('expand_region', () => {
+    var expandSub = vscode.commands.registerCommand('expand_region_dart', () => {
         // The code you place here will be executed every time your command is executed
         if (!exp) {
             exp = new ExpanderManager()
@@ -23,7 +23,7 @@ export function activate(context: vscode.ExtensionContext) {
         exp.expand();
     });
 
-    var undoExpandSub = vscode.commands.registerCommand('undo_expand_region', () => {
+    var undoExpandSub = vscode.commands.registerCommand('undo_expand_region_dart', () => {
         if (exp) {
             exp.undoExpand();
         }

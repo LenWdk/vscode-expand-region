@@ -1,3 +1,8 @@
+vsce package to build
+code --install-extension expand-region-dart-0.1.2.vsix  to install
+F5 to debug
+
+
 [![Build Status](https://travis-ci.org/windwp/vscode-expand-region.svg?branch=master)](https://travis-ci.org/windwp/vscode-expand-region)
 # vscode-expand-region
 porting sublime-expand-region to visual code
