@@ -18,6 +18,9 @@ export class ExpanderManager {
                 case LanguageType.PHP:
                     exp = new expander.php();
                     break;
+                case LanguageType.DART:
+                        exp = new expander.dart();
+                        break;
                 default:
                     exp = new expander.javascript();
                     break;
